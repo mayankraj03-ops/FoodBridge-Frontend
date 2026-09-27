@@ -1,0 +1,3445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>FoodBridge — Restaurant Dashboard</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+/* =========================
+   ROOT
+========================= */
+
+:root{
+    --green:#129447;
+    --green-dark:#08743a;
+    --green-light:#e8f8ee;
+
+    --ink:#0f1d2f;
+    --muted:#6d7a89;
+
+    --line:#e9eef2;
+    --bg:#f7faf8;
+    --white:#fff;
+
+    --red:#ef3038;
+    --blue:#2f78e5;
+    --orange:#e8a21a;
+    --purple:#7b4dde;
+
+    --shadow:0 8px 28px rgba(21,44,34,.07);
+}
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:Inter,Arial,sans-serif;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+button,
+input{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+
+.dashboard{
+    min-height:100vh;
+    display:grid;
+    grid-template-columns:272px 1fr;
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+    position:sticky;
+    top:0;
+    height:100vh;
+    background:#fff;
+    border-right:1px solid var(--line);
+
+    padding:22px 14px;
+
+    display:flex;
+    flex-direction:column;
+
+    z-index:20;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:11px;
+
+    padding:0 12px 24px;
+}
+
+.logo-mark{
+    width:42px;
+    height:42px;
+
+    border-radius:13px;
+
+    background:#e9f8ef;
+    color:var(--green);
+
+    display:grid;
+    place-items:center;
+
+    font-size:22px;
+}
+
+.logo-text{
+    font-family:Poppins,sans-serif;
+    font-size:25px;
+    font-weight:800;
+
+    letter-spacing:-1px;
+}
+
+.logo-text span{
+    color:var(--green);
+}
+
+.logo small{
+    display:block;
+    color:#788694;
+    font-size:12px;
+    margin-top:-1px;
+}
+
+
+/* NAV */
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.nav a{
+    min-height:49px;
+
+    display:flex;
+    align-items:center;
+
+    gap:15px;
+
+    padding:0 15px;
+
+    border-radius:12px;
+
+    color:#344353;
+
+    font-weight:600;
+    font-size:14px;
+
+    transition:.2s;
+}
+
+.nav a i{
+    width:22px;
+    text-align:center;
+    font-size:17px;
+
+    color:#49606a;
+}
+
+.nav a:hover{
+    background:#f0f8f3;
+    color:var(--green);
+}
+
+.nav a.active{
+    background:#e4f6eb;
+    color:#172b24;
+
+    box-shadow:inset 4px 0 0 var(--green);
+}
+
+.nav a.active i{
+    color:var(--green);
+}
+
+
+/* BADGE */
+
+.badge{
+    margin-left:auto;
+
+    background:var(--red);
+    color:#fff;
+
+    min-width:22px;
+    height:22px;
+
+    border-radius:50%;
+
+    display:grid;
+    place-items:center;
+
+    font-size:11px;
+    font-weight:800;
+}
+
+
+/* SUPPORT */
+
+.support{
+    margin-top:auto;
+
+    background:linear-gradient(
+        145deg,
+        #e8f8ee,
+        #f7fcf8
+    );
+
+    border-radius:18px;
+
+    padding:18px 14px;
+
+    border:1px solid #dcefe3;
+}
+
+.support .support-icon{
+    width:50px;
+    height:50px;
+
+    border-radius:50%;
+
+    background:#d7f3e0;
+    color:var(--green);
+
+    display:grid;
+    place-items:center;
+
+    font-size:23px;
+
+    margin-bottom:12px;
+}
+
+.support h4{
+    margin:0 0 5px;
+
+    font-size:15px;
+}
+
+.support p{
+    margin:0 0 14px;
+
+    color:var(--muted);
+
+    font-size:12px;
+
+    line-height:1.5;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn{
+    border:0;
+
+    border-radius:10px;
+
+    padding:11px 16px;
+
+    font-weight:700;
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    gap:9px;
+
+    transition:.2s;
+}
+
+.btn-green{
+    background:var(--green);
+    color:#fff;
+}
+
+.btn-green:hover{
+    background:var(--green-dark);
+    transform:translateY(-1px);
+}
+
+.btn-white{
+    background:#fff;
+    color:#20323d;
+
+    border:1px solid #e5eaee;
+}
+
+.btn-white:hover{
+    border-color:#cbd7cf;
+    background:#f9fbfa;
+}
+
+.full{
+    width:100%;
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+    min-width:0;
+}
+
+
+/* =========================
+   TOPBAR
+========================= */
+
+.topbar{
+    height:75px;
+
+    background:#fff;
+
+    border-bottom:1px solid var(--line);
+
+    display:flex;
+    align-items:center;
+
+    gap:20px;
+
+    padding:0 28px;
+
+    position:sticky;
+    top:0;
+
+    z-index:15;
+}
+
+
+/* SEARCH */
+
+.search{
+    height:43px;
+
+    max-width:535px;
+    flex:1;
+
+    background:#f3f6f7;
+
+    border-radius:11px;
+
+    display:flex;
+    align-items:center;
+
+    padding:0 16px;
+
+    gap:12px;
+
+    color:#667786;
+}
+
+.search input{
+    border:0;
+    outline:0;
+
+    background:transparent;
+
+    width:100%;
+
+    font-size:13px;
+
+    color:var(--ink);
+}
+
+
+/* TOP ACTIONS */
+
+.top-actions{
+    margin-left:auto;
+
+    display:flex;
+    align-items:center;
+
+    gap:18px;
+}
+
+.icon-btn{
+    width:42px;
+    height:42px;
+
+    display:grid;
+    place-items:center;
+
+    border:0;
+
+    background:transparent;
+
+    color:#334653;
+
+    position:relative;
+}
+
+.icon-btn:hover{
+    background:#f2f6f4;
+    border-radius:50%;
+}
+
+.notify{
+    position:absolute;
+
+    right:1px;
+    top:0;
+
+    background:var(--red);
+
+    color:#fff;
+
+    border-radius:50%;
+
+    width:19px;
+    height:19px;
+
+    display:grid;
+    place-items:center;
+
+    font-size:10px;
+
+    font-weight:800;
+}
+
+
+/* PROFILE */
+
+.profile{
+    display:flex;
+    align-items:center;
+
+    gap:11px;
+
+    padding-left:17px;
+
+    border-left:1px solid var(--line);
+
+    cursor:pointer;
+}
+
+.avatar{
+    width:44px;
+    height:44px;
+
+    border-radius:50%;
+
+    background:#148d4b;
+    color:#fff;
+
+    display:grid;
+    place-items:center;
+
+    font-weight:800;
+}
+
+.profile strong{
+    font-size:14px;
+    display:block;
+}
+
+.profile span{
+    font-size:12px;
+    color:var(--muted);
+}
+
+.profile i{
+    font-size:11px;
+    margin-left:14px;
+    color:#263642;
+}
+
+
+/* =========================
+   CONTENT
+========================= */
+
+.content{
+    padding:0 20px 35px;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    margin-top:0;
+
+    min-height:278px;
+
+    border-radius:0 0 20px 20px;
+
+    overflow:hidden;
+
+    position:relative;
+
+    display:flex;
+    align-items:center;
+
+    padding:34px;
+
+    background:
+        radial-gradient(
+            circle at 72% 25%,
+            rgba(53,179,102,.28),
+            transparent 31%
+        ),
+        linear-gradient(
+            100deg,
+            #effaf3 0%,
+            #e6f6ec 55%,
+            #dff1e5 100%
+        );
+}
+
+.hero-copy{
+    position:relative;
+    z-index:2;
+
+    max-width:590px;
+}
+
+.hero .welcome{
+    font-size:14px;
+
+    color:#29485a;
+
+    margin-bottom:7px;
+}
+
+.hero h1{
+    font-family:Poppins,sans-serif;
+
+    font-size:31px;
+
+    line-height:1.12;
+
+    margin:0 0 11px;
+
+    letter-spacing:-1px;
+}
+
+.hero h1 span{
+    color:#15964d;
+}
+
+.hero p{
+    color:#46616e;
+
+    line-height:1.5;
+
+    max-width:540px;
+
+    margin:0 0 20px;
+
+    font-size:14px;
+}
+
+.hero-actions{
+    display:flex;
+
+    gap:12px;
+
+    flex-wrap:wrap;
+}
+
+
+/* HERO VISUAL */
+
+.hero-visual{
+    position:absolute;
+
+    right:20px;
+    bottom:-4px;
+
+    width:46%;
+    height:100%;
+
+    overflow:hidden;
+}
+
+.hero-visual:before{
+    content:"";
+
+    position:absolute;
+
+    right:3%;
+    top:19px;
+
+    width:280px;
+    height:280px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.56);
+}
+
+
+/* FOOD PLATE */
+
+.hero-visual .food-plate{
+    position:absolute;
+
+    right:15%;
+    bottom:-24px;
+
+    width:280px;
+    height:125px;
+
+    border-radius:50%;
+
+    background:linear-gradient(#fefefe,#dce4de);
+
+    border:12px solid rgba(255,255,255,.88);
+
+    box-shadow:
+        0 -8px 30px rgba(36,76,53,.12);
+}
+
+.food-plate:after{
+    content:"";
+
+    position:absolute;
+
+    left:22%;
+    top:15%;
+
+    width:160px;
+    height:75px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle at 30% 35%,
+            #f2bc4b 0 10%,
+            transparent 11%
+        ),
+        radial-gradient(
+            circle at 60% 45%,
+            #d94c28 0 11%,
+            transparent 12%
+        ),
+        radial-gradient(
+            circle at 45% 65%,
+            #5a9d42 0 13%,
+            transparent 14%
+        ),
+        radial-gradient(
+            circle at 75% 70%,
+            #f0a238 0 10%,
+            transparent 11%
+        ),
+        #e8d38e;
+}
+
+
+/* CHILD */
+
+.hero-visual .child{
+    position:absolute;
+
+    right:6%;
+    bottom:0;
+
+    width:170px;
+    height:235px;
+
+    border-radius:90px 90px 0 0;
+
+    background:
+        linear-gradient(
+            145deg,
+            #183b2d,
+            #2e7051
+        );
+
+    opacity:.95;
+}
+
+.hero-visual .child:before{
+    content:"";
+
+    position:absolute;
+
+    left:38px;
+    top:-54px;
+
+    width:94px;
+    height:94px;
+
+    border-radius:50%;
+
+    background:#b96f4e;
+
+    box-shadow:
+        inset 17px 5px 0 #42291f;
+}
+
+
+/* QUOTE */
+
+.quote{
+    position:absolute;
+
+    right:37%;
+    top:47px;
+
+    background:#fff;
+
+    border-radius:16px;
+
+    padding:13px 17px;
+
+    box-shadow:var(--shadow);
+
+    font-size:12px;
+
+    line-height:1.45;
+
+    color:#47606b;
+
+    max-width:185px;
+
+    z-index:4;
+}
+
+.quote b{
+    color:var(--green);
+
+    display:block;
+
+    margin-bottom:3px;
+}
+
+
+/* =========================
+   STATS
+========================= */
+
+.stats{
+    display:grid;
+
+    grid-template-columns:
+        repeat(5,1fr);
+
+    gap:12px;
+
+    margin-top:12px;
+}
+
+.stat{
+    background:#fff;
+
+    border:1px solid #edf1f2;
+
+    border-radius:17px;
+
+    padding:16px 17px;
+
+    min-width:0;
+
+    box-shadow:
+        0 3px 15px rgba(23,52,38,.025);
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+.stat .top{
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+}
+
+.stat-icon{
+    width:42px;
+    height:42px;
+
+    border-radius:50%;
+
+    display:grid;
+    place-items:center;
+
+    font-size:18px;
+}
+
+.stat.green .stat-icon{
+    background:#e4f7eb;
+    color:var(--green);
+}
+
+.stat.yellow .stat-icon{
+    background:#fff4d9;
+    color:#e3a116;
+}
+
+.stat.blue .stat-icon{
+    background:#e7f0ff;
+    color:#2e73d4;
+}
+
+.stat.red .stat-icon{
+    background:#ffe7ea;
+    color:#ec3542;
+}
+
+.stat-num{
+    font-family:Poppins,sans-serif;
+
+    font-size:21px;
+
+    font-weight:800;
+
+    margin:0;
+}
+
+.stat-label{
+    font-size:11px;
+
+    color:#6d7b87;
+
+    margin-top:3px;
+}
+
+.delta{
+    font-size:10px;
+
+    font-weight:700;
+
+    display:inline-block;
+
+    margin-top:10px;
+
+    padding:4px 7px;
+
+    border-radius:7px;
+
+    background:#eaf8ef;
+
+    color:#11904a;
+}
+
+.delta.yellow{
+    background:#fff5dd;
+    color:#d9950d;
+}
+
+.delta.blue{
+    background:#eaf2ff;
+    color:#3477d7;
+}
+
+.delta.red{
+    background:#ffe9eb;
+    color:#e83243;
+}
+
+
+/* =========================
+   DASHBOARD GRID
+========================= */
+
+.grid{
+    display:grid;
+
+    grid-template-columns:
+        1.1fr 1fr 1fr;
+
+    gap:12px;
+
+    margin-top:12px;
+
+    align-items:stretch;
+}
+
+
+/* PANEL */
+
+.panel{
+    background:#fff;
+
+    border:1px solid #e8eef0;
+
+    border-radius:17px;
+
+    padding:18px;
+
+    box-shadow:var(--shadow);
+}
+
+.panel-head{
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:15px;
+}
+
+.panel-head h3{
+    font-family:Poppins,sans-serif;
+
+    font-size:16px;
+
+    margin:0;
+}
+
+.panel-head a{
+    font-size:12px;
+
+    color:var(--green);
+
+    font-weight:700;
+}
+
+
+/* =========================
+   QUICK ACTIONS
+========================= */
+
+.qa-grid{
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:12px;
+}
+
+.qa{
+    min-height:126px;
+
+    border-radius:13px;
+
+    padding:15px;
+
+    position:relative;
+
+    transition:.2s;
+
+    border:1px solid transparent;
+}
+
+.qa:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 7px 20px rgba(30,70,50,.08);
+
+    border-color:#dfeae3;
+}
+
+.qa.green{
+    background:#eaf8ef;
+}
+
+.qa.blue{
+    background:#edf4ff;
+}
+
+.qa.purple{
+    background:#f3edff;
+}
+
+.qa.orange{
+    background:#fff4e4;
+}
+
+.qa i{
+    font-size:22px;
+
+    margin-bottom:13px;
+}
+
+.qa.green i{
+    color:#129447;
+}
+
+.qa.blue i{
+    color:#3477dc;
+}
+
+.qa.purple i{
+    color:#794dde;
+}
+
+.qa.orange i{
+    color:#e59a17;
+}
+
+.qa h4{
+    font-size:13px;
+
+    margin:0 0 5px;
+}
+
+.qa p{
+    font-size:10.5px;
+
+    line-height:1.4;
+
+    color:#73818a;
+
+    margin:0;
+}
+
+.qa .arrow{
+    position:absolute;
+
+    right:13px;
+    top:14px;
+
+    font-size:13px;
+
+    color:#53626b;
+}
+
+
+/* =========================
+   ACTIVITY
+========================= */
+
+.activity-list{
+    display:flex;
+
+    flex-direction:column;
+}
+
+.activity{
+    display:flex;
+
+    gap:12px;
+
+    padding:11px 0;
+
+    border-bottom:1px solid #eef1f2;
+}
+
+.activity:last-child{
+    border-bottom:0;
+}
+
+.activity-icon{
+    width:30px;
+    height:30px;
+
+    border-radius:50%;
+
+    background:#e7f7ed;
+
+    color:var(--green);
+
+    display:grid;
+    place-items:center;
+
+    font-size:12px;
+
+    flex:0 0 auto;
+}
+
+.activity b{
+    font-size:12px;
+
+    display:block;
+
+    margin-bottom:4px;
+}
+
+.activity span{
+    font-size:10.5px;
+
+    color:#7a8790;
+
+    line-height:1.45;
+}
+
+.activity .time{
+    margin-top:3px;
+
+    display:block;
+
+    color:#9aa5ad;
+}
+
+.panel-footer{
+    margin-top:12px;
+
+    background:#edf8f1;
+
+    padding:10px;
+
+    text-align:center;
+
+    border-radius:10px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    color:#213a2c;
+}
+
+
+/* =========================
+   REQUESTS
+========================= */
+
+.request{
+    display:flex;
+
+    gap:10px;
+
+    padding:10px 0;
+
+    border-bottom:1px solid #eef1f2;
+}
+
+.request:last-child{
+    border-bottom:0;
+}
+
+.food-img{
+    width:56px;
+    height:56px;
+
+    border-radius:11px;
+
+    display:grid;
+    place-items:center;
+
+    font-size:25px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffe4b9,
+            #f3b866
+        );
+
+    flex:0 0 auto;
+}
+
+.food-img.pizza{
+    background:
+        linear-gradient(
+            135deg,
+            #ffd4b4,
+            #f2a15b
+        );
+}
+
+.food-img.chicken{
+    background:
+        linear-gradient(
+            135deg,
+            #f7d4ac,
+            #d68d42
+        );
+}
+
+.request-main{
+    min-width:0;
+
+    flex:1;
+}
+
+.request-main b{
+    display:block;
+
+    font-size:12px;
+
+    margin:1px 0 5px;
+}
+
+.request-main span{
+    display:block;
+
+    font-size:10px;
+
+    color:#76848d;
+
+    line-height:1.45;
+}
+
+.status{
+    align-self:flex-start;
+
+    background:#e6f8ed;
+
+    color:#11904b;
+
+    border-radius:14px;
+
+    padding:5px 8px;
+
+    font-size:9px;
+
+    font-weight:800;
+
+    white-space:nowrap;
+}
+
+.more{
+    border:0;
+
+    background:transparent;
+
+    color:#66737d;
+
+    padding:5px;
+}
+
+.more:hover{
+    color:#111;
+}
+
+
+/* =========================
+   IMPACT
+========================= */
+
+.impact{
+    margin-top:12px;
+
+    background:
+        linear-gradient(
+            100deg,
+            #effaf3,
+            #fff
+        );
+
+    border:1px solid #dcefe3;
+
+    border-radius:17px;
+
+    padding:17px 20px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+}
+
+.impact-icon{
+    width:45px;
+    height:45px;
+
+    border-radius:50%;
+
+    background:#dff5e7;
+
+    color:var(--green);
+
+    display:grid;
+    place-items:center;
+
+    font-size:19px;
+
+    flex:0 0 auto;
+}
+
+.impact-copy{
+    min-width:190px;
+}
+
+.impact-copy b{
+    font-size:14px;
+}
+
+.impact-copy p{
+    font-size:10.5px;
+
+    color:#74828b;
+
+    margin:4px 0 0;
+}
+
+.impact-stats{
+    display:flex;
+
+    gap:30px;
+
+    margin-left:auto;
+}
+
+.impact-stats div{
+    text-align:center;
+}
+
+.impact-stats b{
+    display:block;
+
+    font-size:16px;
+}
+
+.impact-stats span{
+    font-size:9px;
+
+    color:#78858e;
+}
+
+.impact .btn{
+    margin-left:8px;
+
+    white-space:nowrap;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+    background:#10241b;
+
+    color:#d9e7de;
+
+    margin-top:10px;
+
+    padding:32px 20px 20px;
+}
+
+.footer-grid{
+    display:grid;
+
+    grid-template-columns:
+        1.6fr repeat(3,1fr) 1.1fr;
+
+    gap:30px;
+
+    max-width:1300px;
+
+    margin:auto;
+}
+
+.footer h4{
+    font-size:13px;
+
+    margin:0 0 12px;
+
+    color:#fff;
+}
+
+.footer p,
+.footer a{
+    font-size:11px;
+
+    color:#9eb3a6;
+
+    line-height:1.7;
+}
+
+.footer a:hover{
+    color:#5cd66a;
+}
+
+.footer-brand .logo-text{
+    font-size:20px;
+
+    color:#fff;
+}
+
+.footer-brand p{
+    max-width:260px;
+}
+
+.socials{
+    display:flex;
+
+    gap:8px;
+
+    margin-top:12px;
+}
+
+.socials a{
+    width:30px;
+    height:30px;
+
+    border-radius:50%;
+
+    background:#1d392b;
+
+    display:grid;
+    place-items:center;
+}
+
+.footer ul{
+    list-style:none;
+
+    margin:0;
+    padding:0;
+}
+
+.footer li{
+    margin:5px 0;
+}
+
+.newsletter{
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+}
+
+.newsletter input{
+    height:36px;
+
+    border-radius:8px;
+
+    border:1px solid #365043;
+
+    background:#193025;
+
+    padding:0 10px;
+
+    color:#fff;
+
+    outline:0;
+}
+
+.footer-bottom{
+    max-width:1300px;
+
+    margin:25px auto 0;
+
+    padding-top:15px;
+
+    border-top:1px solid #294337;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:15px;
+
+    flex-wrap:wrap;
+
+    color:#80968a;
+
+    font-size:10px;
+}
+
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+    position:fixed;
+
+    right:22px;
+    bottom:22px;
+
+    background:#13251c;
+
+    color:#fff;
+
+    padding:13px 17px;
+
+    border-radius:11px;
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.18);
+
+    font-size:12px;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transform:translateY(10px);
+
+    transition:.25s;
+
+    z-index:99;
+}
+
+.toast.show{
+    opacity:1;
+
+    transform:translateY(0);
+}
+
+
+/* =========================
+   MOBILE MENU
+========================= */
+
+.menu-toggle{
+    display:none;
+
+    border:0;
+
+    background:transparent;
+
+    font-size:20px;
+
+    color:#24353f;
+
+    width:42px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1150px){
+
+    .dashboard{
+        grid-template-columns:230px 1fr;
+    }
+
+    .stats{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .grid .panel:first-child{
+        grid-column:1/-1;
+    }
+
+    .footer-grid{
+        grid-template-columns:
+            1.5fr repeat(2,1fr);
+    }
+}
+
+
+@media(max-width:850px){
+
+    .dashboard{
+        display:block;
+    }
+
+    .sidebar{
+        position:fixed;
+
+        left:-290px;
+
+        width:272px;
+
+        transition:.25s;
+
+        box-shadow:
+            10px 0 30px rgba(0,0,0,.12);
+    }
+
+    .sidebar.open{
+        left:0;
+    }
+
+    .menu-toggle{
+        display:grid!important;
+        place-items:center;
+    }
+
+    .topbar{
+        padding:0 15px;
+    }
+
+    .content{
+        padding:0 12px 25px;
+    }
+
+    .hero{
+        min-height:340px;
+
+        padding:25px;
+    }
+
+    .hero-visual{
+        opacity:.25;
+
+        width:100%;
+
+        right:0;
+    }
+
+    .stats{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .grid .panel:first-child{
+        grid-column:auto;
+    }
+
+    .impact{
+        align-items:flex-start;
+
+        flex-wrap:wrap;
+    }
+
+    .impact-stats{
+        margin-left:0;
+
+        flex-wrap:wrap;
+
+        gap:18px;
+    }
+
+    .impact .btn{
+        margin-left:0;
+    }
+
+    .profile div:not(.avatar),
+    .profile>i{
+        display:none;
+    }
+
+    .profile{
+        border-left:0;
+
+        padding:0;
+    }
+}
+
+
+@media(max-width:560px){
+
+    .search{
+        max-width:none;
+    }
+
+    .topbar{
+        gap:7px;
+    }
+
+    .menu-toggle{
+        width:38px!important;
+    }
+
+    .hero h1{
+        font-size:25px;
+    }
+
+    .hero p{
+        font-size:12px;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .qa-grid{
+        grid-template-columns:1fr;
+    }
+
+    .footer-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .footer-brand{
+        grid-column:1/-1;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="dashboard">
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar" id="sidebar">
+
+    <a href="dashboard.html" class="logo">
+
+        <div class="logo-mark">
+            <i class="fa-solid fa-seedling"></i>
+        </div>
+
+        <div>
+
+            <div class="logo-text">
+                Food<span>Bridge</span>
+            </div>
+
+            <small>
+                Share Food, Share Hope
+            </small>
+
+        </div>
+
+    </a>
+
+
+    <nav class="nav">
+
+        <a
+            class="active"
+            href="dashboard.html">
+
+            <i class="fa-solid fa-house"></i>
+
+            Dashboard
+
+        </a>
+
+
+        <a href="dashboard-post-food.html">
+
+            <i class="fa-solid fa-circle-plus"></i>
+
+            Post Food
+
+        </a>
+
+
+        <a href="dashboard-my-donations.html">
+
+            <i class="fa-solid fa-box"></i>
+
+            My Donations
+
+        </a>
+
+
+        <a href="dashboard-requests.html">
+
+            <i class="fa-solid fa-hand-holding-heart"></i>
+
+            Requests
+
+        </a>
+
+
+        <a href="dashboard-my-pickups.html">
+
+            <i class="fa-solid fa-truck"></i>
+
+            My Pickups
+
+        </a>
+
+
+        <a href="dashboard-messages.html">
+
+            <i class="fa-solid fa-message"></i>
+
+            Messages
+
+            <span class="badge">
+                2
+            </span>
+
+        </a>
+
+
+        <a href="dashboard-notifications.html">
+
+            <i class="fa-solid fa-bell"></i>
+
+            Notifications
+
+            <span class="badge">
+                7
+            </span>
+
+        </a>
+
+
+        <a href="dashboard-my-impact.html">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            FoodBridge Impact
+
+        </a>
+
+
+        <a href="dashboard-available-food.html">
+
+            <i class="fa-solid fa-utensils"></i>
+
+            Available Food
+
+        </a>
+
+
+        <a href="dashboard-settings.html">
+
+            <i class="fa-solid fa-gear"></i>
+
+            Settings
+
+        </a>
+
+
+        <a href="dashboard-help.html">
+
+            <i class="fa-solid fa-circle-question"></i>
+
+            Help & Support
+
+        </a>
+
+    </nav>
+
+
+    <!-- SUPPORT -->
+
+    <div class="support">
+
+        <div class="support-icon">
+
+            <i class="fa-solid fa-hand-holding-heart"></i>
+
+        </div>
+
+
+        <h4>
+            Together We Can End Food Waste
+        </h4>
+
+
+        <p>
+            Need help with a donation, pickup or request?
+        </p>
+
+
+        <a
+            class="btn btn-green full"
+            href="dashboard-help.html">
+
+            <i class="fa-solid fa-headset"></i>
+
+            Contact Support
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="main">
+
+
+<!-- =====================================================
+     TOPBAR
+===================================================== -->
+
+<header class="topbar">
+
+
+    <button
+        class="menu-toggle"
+        id="menuToggle"
+        aria-label="Open menu">
+
+        <i class="fa-solid fa-bars"></i>
+
+    </button>
+
+
+    <!-- SEARCH -->
+
+    <div class="search">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+            id="searchInput"
+            type="search"
+            placeholder="Search donations, requests, NGOs..."
+            autocomplete="off">
+
+    </div>
+
+
+    <div class="top-actions">
+
+
+        <!-- NOTIFICATIONS -->
+
+        <a
+            class="icon-btn"
+            href="dashboard-notifications.html"
+            aria-label="Notifications">
+
+            <i class="fa-regular fa-bell"></i>
+
+            <span class="notify">
+                7
+            </span>
+
+        </a>
+
+
+        <!-- PROFILE -->
+
+        <a
+            class="profile"
+            href="dashboard-settings.html"
+            aria-label="Profile settings">
+
+            <div class="avatar">
+                AP
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Ashish Pant
+                </strong>
+
+                <span>
+                    Restaurant / Donor
+                </span>
+
+            </div>
+
+
+            <i class="fa-solid fa-chevron-down"></i>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     CONTENT
+===================================================== -->
+
+<section class="content">
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="hero">
+
+
+    <div class="hero-copy">
+
+
+        <div class="welcome">
+
+            Welcome back, Ashish Pant! 👋
+
+        </div>
+
+
+        <h1>
+
+            Manage your surplus food
+            <br>
+
+            and see the
+            <span>
+                real impact.
+            </span>
+
+        </h1>
+
+
+        <p>
+
+            Good food should never go to waste.
+            Post, track and help communities in need
+            with FoodBridge.
+
+        </p>
+
+
+        <div class="hero-actions">
+
+
+            <a
+                class="btn btn-green"
+                href="dashboard-post-food.html">
+
+                <i class="fa-solid fa-plus"></i>
+
+                Post Food
+
+            </a>
+
+
+            <a
+                class="btn btn-white"
+                href="dashboard-my-donations.html">
+
+                <i class="fa-solid fa-box"></i>
+
+                View My Donations
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- HERO VISUAL -->
+
+    <div
+        class="hero-visual"
+        aria-hidden="true">
+
+
+        <div class="quote">
+
+            <b>
+
+                <i class="fa-solid fa-people-group"></i>
+
+                Every donation
+
+            </b>
+
+            creates a stronger,
+            healthier community. 💚
+
+        </div>
+
+
+        <div class="child"></div>
+
+
+        <div class="food-plate"></div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     STATISTICS
+===================================================== -->
+
+<section class="stats">
+
+
+    <!-- TOTAL DONATIONS -->
+
+    <article class="stat green">
+
+        <div class="top">
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-box"></i>
+
+            </div>
+
+
+            <div>
+
+                <div class="stat-num">
+                    7
+                </div>
+
+                <div class="stat-label">
+                    Total Donations
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <span class="delta">
+            ↑ +2 this month
+        </span>
+
+    </article>
+
+
+
+    <!-- MEALS -->
+
+    <article class="stat yellow">
+
+        <div class="top">
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-bowl-food"></i>
+
+            </div>
+
+
+            <div>
+
+                <div class="stat-num">
+                    176
+                </div>
+
+                <div class="stat-label">
+                    Meals Donated
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <span class="delta yellow">
+            ↑ +45 this month
+        </span>
+
+    </article>
+
+
+
+    <!-- ACTIVE -->
+
+    <article class="stat blue">
+
+        <div class="top">
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-people-group"></i>
+
+            </div>
+
+
+            <div>
+
+                <div class="stat-num">
+                    6
+                </div>
+
+                <div class="stat-label">
+                    Active Donations
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <span class="delta blue">
+            ↓ In progress
+        </span>
+
+    </article>
+
+
+
+    <!-- COMPLETED -->
+
+    <article class="stat green">
+
+        <div class="top">
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+            </div>
+
+
+            <div>
+
+                <div class="stat-num">
+                    0
+                </div>
+
+                <div class="stat-label">
+                    Completed Donations
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <span class="delta">
+            ↓ Delivered
+        </span>
+
+    </article>
+
+
+
+    <!-- PENDING -->
+
+    <article class="stat red">
+
+        <div class="top">
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-clock"></i>
+
+            </div>
+
+
+            <div>
+
+                <div class="stat-num">
+                    0
+                </div>
+
+                <div class="stat-label">
+                    Pending Requests
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <span class="delta red">
+            ↓ Needs your action
+        </span>
+
+    </article>
+
+</section>
+
+
+
+<!-- =====================================================
+     MAIN GRID
+===================================================== -->
+
+<section class="grid">
+
+
+<!-- =====================================================
+     QUICK ACTIONS
+===================================================== -->
+
+<article class="panel">
+
+
+    <div class="panel-head">
+
+        <h3>
+            Quick Actions
+        </h3>
+
+        <span
+            style="
+                font-size:11px;
+                color:#84919a;
+            ">
+
+            Take action and make a difference
+
+        </span>
+
+    </div>
+
+
+    <div class="qa-grid">
+
+
+        <!-- POST FOOD -->
+
+        <a
+            class="qa green"
+            href="dashboard-post-food.html">
+
+            <i class="fa-solid fa-plus-circle"></i>
+
+            <span class="arrow">
+                →
+            </span>
+
+            <h4>
+                Post Surplus Food
+            </h4>
+
+            <p>
+                Add a real food donation
+            </p>
+
+        </a>
+
+
+        <!-- REQUESTS -->
+
+        <a
+            class="qa blue"
+            href="dashboard-requests.html">
+
+            <i class="fa-solid fa-people-group"></i>
+
+            <span class="arrow">
+                →
+            </span>
+
+            <h4>
+                Review Requests
+            </h4>
+
+            <p>
+                See NGO food requests
+            </p>
+
+        </a>
+
+
+        <!-- DONATIONS -->
+
+        <a
+            class="qa purple"
+            href="dashboard-my-donations.html">
+
+            <i class="fa-solid fa-box"></i>
+
+            <span class="arrow">
+                →
+            </span>
+
+            <h4>
+                My Donations
+            </h4>
+
+            <p>
+                Track all your donations
+            </p>
+
+        </a>
+
+
+        <!-- IMPACT -->
+
+        <a
+            class="qa orange"
+            href="dashboard-my-impact.html">
+
+            <i class="fa-solid fa-chart-simple"></i>
+
+            <span class="arrow">
+                →
+            </span>
+
+            <h4>
+                FoodBridge Impact
+            </h4>
+
+            <p>
+                See your donation impact
+            </p>
+
+        </a>
+
+    </div>
+
+</article>
+
+
+
+<!-- =====================================================
+     RECENT ACTIVITY
+===================================================== -->
+
+<article class="panel">
+
+
+    <div class="panel-head">
+
+        <h3>
+            Recent Activity
+        </h3>
+
+        <a href="dashboard-my-donations.html">
+            View All
+        </a>
+
+    </div>
+
+
+    <div class="activity-list">
+
+
+        <a
+            class="activity"
+            href="dashboard-my-donations.html">
+
+            <div class="activity-icon">
+
+                <i class="fa-solid fa-box"></i>
+
+            </div>
+
+
+            <div>
+
+                <b>
+                    Donation: RAJMA CHAWAL
+                </b>
+
+                <span>
+                    Accepted · 15 meals
+                </span>
+
+                <span class="time">
+                    20 hr ago
+                </span>
+
+            </div>
+
+        </a>
+
+
+
+        <a
+            class="activity"
+            href="dashboard-my-donations.html">
+
+            <div class="activity-icon">
+
+                <i class="fa-solid fa-box"></i>
+
+            </div>
+
+
+            <div>
+
+                <b>
+                    Donation: Pizza
+                </b>
+
+                <span>
+                    Accepted · 5 meals
+                </span>
+
+                <span class="time">
+                    20 hr ago
+                </span>
+
+            </div>
+
+        </a>
+
+
+
+        <a
+            class="activity"
+            href="dashboard-my-donations.html">
+
+            <div class="activity-icon">
+
+                <i class="fa-solid fa-box"></i>
+
+            </div>
+
+
+            <div>
+
+                <b>
+                    Donation: RAJMA CHAWAL
+                </b>
+
+                <span>
+                    Accepted · 50 meals
+                </span>
+
+                <span class="time">
+                    3 days ago
+                </span>
+
+            </div>
+
+        </a>
+
+
+
+        <a
+            class="activity"
+            href="dashboard-requests.html">
+
+            <div
+                class="activity-icon"
+                style="
+                    background:#eaf1ff;
+                    color:#3477dc;
+                ">
+
+                <i class="fa-solid fa-users"></i>
+
+            </div>
+
+
+            <div>
+
+                <b>
+                    Request for RAJMA CHAWAL
+                </b>
+
+                <span>
+                    Approved
+                </span>
+
+                <span class="time">
+                    20 hr ago
+                </span>
+
+            </div>
+
+        </a>
+
+
+
+        <a
+            class="activity"
+            href="dashboard-my-donations.html">
+
+            <div class="activity-icon">
+
+                <i class="fa-solid fa-check"></i>
+
+            </div>
+
+
+            <div>
+
+                <b>
+                    Donation: Chicken Curry
+                </b>
+
+                <span>
+                    Picked up by NGO
+                </span>
+
+                <span class="time">
+                    3 days ago
+                </span>
+
+            </div>
+
+        </a>
+
+    </div>
+
+
+    <a
+        class="panel-footer"
+        href="dashboard-my-donations.html">
+
+        View All Activity
+
+        <i class="fa-solid fa-arrow-right"></i>
+
+    </a>
+
+</article>
+
+
+
+<!-- =====================================================
+     REQUESTS REQUIRING ATTENTION
+===================================================== -->
+
+<article class="panel">
+
+
+    <div class="panel-head">
+
+        <h3>
+            Requests Requiring Attention
+        </h3>
+
+        <a href="dashboard-requests.html">
+            View All
+        </a>
+
+    </div>
+
+
+    <!-- REQUEST 1 -->
+
+    <a
+        class="request"
+        href="dashboard-requests.html">
+
+
+        <div class="food-img">
+            🍛
+        </div>
+
+
+        <div class="request-main">
+
+            <b>
+                RAJMA CHAWAL
+            </b>
+
+            <span>
+
+                <i class="fa-solid fa-user"></i>
+
+                Mayank raj kapadi · NGO
+
+            </span>
+
+            <span>
+
+                <i class="fa-solid fa-location-dot"></i>
+
+                Dehradun, 2.3 km
+
+            </span>
+
+        </div>
+
+
+        <span class="status">
+            Approved
+        </span>
+
+
+        <button
+            class="more"
+            type="button"
+            aria-label="More">
+
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+
+        </button>
+
+    </a>
+
+
+
+    <!-- REQUEST 2 -->
+
+    <a
+        class="request"
+        href="dashboard-requests.html">
+
+
+        <div class="food-img pizza">
+            🍕
+        </div>
+
+
+        <div class="request-main">
+
+            <b>
+                Pizza
+            </b>
+
+            <span>
+
+                <i class="fa-solid fa-user"></i>
+
+                Mayank raj kapadi · NGO
+
+            </span>
+
+            <span>
+
+                <i class="fa-solid fa-location-dot"></i>
+
+                Haridwar, 4.1 km
+
+            </span>
+
+        </div>
+
+
+        <span class="status">
+            Approved
+        </span>
+
+
+        <button
+            class="more"
+            type="button"
+            aria-label="More">
+
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+
+        </button>
+
+    </a>
+
+
+
+    <!-- REQUEST 3 -->
+
+    <a
+        class="request"
+        href="dashboard-requests.html">
+
+
+        <div class="food-img">
+            🍛
+        </div>
+
+
+        <div class="request-main">
+
+            <b>
+                RAJMA CHAWAL
+            </b>
+
+            <span>
+
+                <i class="fa-solid fa-user"></i>
+
+                Hope Foundation · NGO
+
+            </span>
+
+            <span>
+
+                <i class="fa-solid fa-location-dot"></i>
+
+                Rishikesh, 5.2 km
+
+            </span>
+
+        </div>
+
+
+        <span class="status">
+            Approved
+        </span>
+
+
+        <button
+            class="more"
+            type="button"
+            aria-label="More">
+
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+
+        </button>
+
+    </a>
+
+
+
+    <!-- REQUEST 4 -->
+
+    <a
+        class="request"
+        href="dashboard-requests.html">
+
+
+        <div class="food-img chicken">
+            🍗
+        </div>
+
+
+        <div class="request-main">
+
+            <b>
+                CHICKEN CURRY
+            </b>
+
+            <span>
+
+                <i class="fa-solid fa-user"></i>
+
+                Care India NGO · NGO
+
+            </span>
+
+            <span>
+
+                <i class="fa-solid fa-location-dot"></i>
+
+                Dehradun, 1.8 km
+
+            </span>
+
+        </div>
+
+
+        <span class="status">
+            Approved
+        </span>
+
+
+        <button
+            class="more"
+            type="button"
+            aria-label="More">
+
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+
+        </button>
+
+    </a>
+
+</article>
+
+</section>
+
+
+
+<!-- =====================================================
+     IMPACT
+===================================================== -->
+
+<section class="impact">
+
+
+    <div class="impact-icon">
+
+        <i class="fa-solid fa-hand-holding-heart"></i>
+
+    </div>
+
+
+    <div class="impact-copy">
+
+        <b>
+            Your Impact Matters!
+        </b>
+
+        <p>
+            You have helped reduce food waste
+            and brought smiles to many faces.
+        </p>
+
+    </div>
+
+
+    <div class="impact-stats">
+
+
+        <div>
+
+            <b>
+                7
+            </b>
+
+            <span>
+                Donations
+            </span>
+
+        </div>
+
+
+        <div>
+
+            <b>
+                176
+            </b>
+
+            <span>
+                Meals Donated
+            </span>
+
+        </div>
+
+
+        <div>
+
+            <b>
+                6
+            </b>
+
+            <span>
+                Active
+            </span>
+
+        </div>
+
+
+        <div>
+
+            <b>
+                0
+            </b>
+
+            <span>
+                Completed
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <a
+        class="btn btn-green"
+        href="dashboard-my-impact.html">
+
+        <i class="fa-solid fa-chart-line"></i>
+
+        View FoodBridge Impact
+
+    </a>
+
+</section>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+
+<div class="footer-grid">
+
+
+    <!-- BRAND -->
+
+    <div class="footer-brand">
+
+        <div class="logo-text">
+
+            Food<span>
+                Bridge
+            </span>
+
+        </div>
+
+
+        <p>
+
+            Connecting surplus food from restaurants
+            to those who need it the most.
+            Together, we can build a hunger-free world.
+
+        </p>
+
+
+        <div class="socials">
+
+            <a
+                href="https://facebook.com/"
+                target="_blank"
+                rel="noopener">
+
+                <i class="fa-brands fa-facebook-f"></i>
+
+            </a>
+
+
+            <a
+                href="https://instagram.com/"
+                target="_blank"
+                rel="noopener">
+
+                <i class="fa-brands fa-instagram"></i>
+
+            </a>
+
+
+            <a
+                href="https://twitter.com/"
+                target="_blank"
+                rel="noopener">
+
+                <i class="fa-brands fa-twitter"></i>
+
+            </a>
+
+
+            <a
+                href="https://linkedin.com/"
+                target="_blank"
+                rel="noopener">
+
+                <i class="fa-brands fa-linkedin-in"></i>
+
+            </a>
+
+
+            <a
+                href="https://youtube.com/"
+                target="_blank"
+                rel="noopener">
+
+                <i class="fa-brands fa-youtube"></i>
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- QUICK LINKS -->
+
+    <div>
+
+        <h4>
+            Quick Links
+        </h4>
+
+        <ul>
+
+            <li>
+                <a href="index.html">
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a href="about.html">
+                    About Us
+                </a>
+            </li>
+
+            <li>
+                <a href="how-it-works.html">
+                    How It Works
+                </a>
+            </li>
+
+            <li>
+                <a href="available-food.html">
+                    Available Food
+                </a>
+            </li>
+
+            <li>
+                <a href="volunteer.html">
+                    Volunteer
+                </a>
+            </li>
+
+            <li>
+                <a href="blog.html">
+                    Blog
+                </a>
+            </li>
+
+            <li>
+                <a href="contact.html">
+                    Contact
+                </a>
+            </li>
+
+        </ul>
+
+    </div>
+
+
+
+    <!-- RESTAURANTS -->
+
+    <div>
+
+        <h4>
+            For Restaurants
+        </h4>
+
+        <ul>
+
+            <li>
+                <a href="signup.html">
+                    Register Restaurant
+                </a>
+            </li>
+
+            <li>
+                <a href="dashboard.html">
+                    Restaurant Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="food-safety.html">
+                    Donation Guidelines
+                </a>
+            </li>
+
+            <li>
+                <a href="success-stories.html">
+                    Success Stories
+                </a>
+            </li>
+
+        </ul>
+
+    </div>
+
+
+
+    <!-- NGO -->
+
+    <div>
+
+        <h4>
+            For NGOs
+        </h4>
+
+        <ul>
+
+            <li>
+                <a href="signup.html">
+                    Register NGO
+                </a>
+            </li>
+
+            <li>
+                <a href="ngo-dashboard.html">
+                    NGO Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="food-safety.html">
+                    Food Safety Guidelines
+                </a>
+            </li>
+
+            <li>
+                <a href="resources.html">
+                    Resources
+                </a>
+            </li>
+
+        </ul>
+
+    </div>
+
+
+
+    <!-- NEWSLETTER -->
+
+    <div>
+
+        <h4>
+            Newsletter
+        </h4>
+
+        <p>
+            Subscribe for updates and stories.
+        </p>
+
+
+        <form
+            class="newsletter"
+            id="newsletterForm">
+
+
+            <input
+                id="newsletterEmail"
+                type="email"
+                placeholder="Enter your email"
+                required>
+
+
+            <button
+                class="btn btn-green"
+                type="submit">
+
+                Subscribe
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+<!-- FOOTER BOTTOM -->
+
+<div class="footer-bottom">
+
+
+    <span>
+        © 2026 FoodBridge. All rights reserved.
+    </span>
+
+
+    <span>
+
+        <a href="privacy-policy.html">
+            Privacy Policy
+        </a>
+
+        &nbsp;|&nbsp;
+
+        <a href="terms.html">
+            Terms & Conditions
+        </a>
+
+        &nbsp;|&nbsp;
+
+        <a href="food-safety.html">
+            Food Safety Policy
+        </a>
+
+    </span>
+
+
+    <span>
+        Made with ❤️ for a better tomorrow
+    </span>
+
+</div>
+
+
+</footer>
+
+</main>
+
+</div>
+
+
+
+<!-- TOAST -->
+
+<div
+    class="toast"
+    id="toast">
+</div>
+
+
+
+<script>
+
+/* =====================================================
+   MOBILE SIDEBAR
+===================================================== */
+
+const sidebar =
+    document.getElementById("sidebar");
+
+const menuToggle =
+    document.getElementById("menuToggle");
+
+
+menuToggle.addEventListener(
+    "click",
+    () => {
+
+        sidebar.classList.toggle("open");
+
+    }
+);
+
+
+
+document.addEventListener(
+    "click",
+    (e) => {
+
+        if(
+            window.innerWidth <= 850 &&
+            sidebar.classList.contains("open") &&
+            !sidebar.contains(e.target) &&
+            !menuToggle.contains(e.target)
+        ){
+
+            sidebar.classList.remove("open");
+
+        }
+
+    }
+);
+
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+const search =
+    document.getElementById("searchInput");
+
+
+search.addEventListener(
+    "keydown",
+    (e) => {
+
+        if(e.key === "Enter"){
+
+            const query =
+                search.value.trim();
+
+
+            if(query){
+
+                window.location.href =
+                    "dashboard-available-food.html?search="
+                    + encodeURIComponent(query);
+
+            }
+
+        }
+
+    }
+);
+
+
+
+/* =====================================================
+   NEWSLETTER
+===================================================== */
+
+const newsletterForm =
+    document.getElementById("newsletterForm");
+
+newsletterForm.addEventListener(
+    "submit",
+    (e) => {
+
+        e.preventDefault();
+
+
+        const email =
+            document
+                .getElementById("newsletterEmail")
+                .value
+                .trim();
+
+
+        if(!email){
+            return;
+        }
+
+
+        showToast(
+            "Thanks! You are subscribed to FoodBridge updates."
+        );
+
+
+        newsletterForm.reset();
+
+    }
+);
+
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+function showToast(message){
+
+    const toast =
+        document.getElementById("toast");
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add("show");
+
+
+    setTimeout(
+        () => {
+
+            toast.classList.remove("show");
+
+        },
+        2500
+    );
+
+}
+
+
+
+/* =====================================================
+   THREE DOT BUTTONS
+===================================================== */
+
+document
+    .querySelectorAll(".more")
+    .forEach(
+        (button) => {
+
+            button.addEventListener(
+                "click",
+                (e) => {
+
+                    e.preventDefault();
+
+                    e.stopPropagation();
+
+
+                    showToast(
+                        "Request options are available on the Requests page."
+                    );
+
+                }
+            );
+
+        }
+    );
+
+</script>
+
+</body>
+</html>
